@@ -12,6 +12,7 @@ def do_pack():
 
     """
     Generates a .tgx archive from web_static
+    save file on local
     """
 
     try:
