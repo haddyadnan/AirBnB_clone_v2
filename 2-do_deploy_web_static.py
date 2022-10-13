@@ -5,6 +5,7 @@
 Write a Fabric script (based on the file 1-pack_web_static.py)
 that distributes an archive to your web servers
 """
+#Fabric file to deploy static files
 
 from fabric.api import *
 import os
@@ -14,7 +15,14 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """distribute archive to web servers"""
+    """Distributes an archive to a web server.
+
+    Args:
+        archive_path (str): The path of the archive to distribute.
+    Returns:
+        If the file doesn't exist at archive_path or an error occurs - False.
+        Otherwise - True.
+    """
     if os.path.isfile(archive_path) is False:
         return False
 
