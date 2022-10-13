@@ -12,7 +12,7 @@
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static). Don’t forget to restart Nginx after updating the configuration:
 
 sudo apt-get update -y
-sudo apt-get Install nginx -y
+sudo apt-get install nginx -y
 sudo mkdir -p /data/
 sudo mkdir -p /data/web_static/
 sudo mkdir -p /data/web_static/releases/
