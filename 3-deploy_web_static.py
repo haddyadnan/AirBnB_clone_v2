@@ -18,10 +18,11 @@ def do_pack():
     """
     try:
         local("mkdir -p versions")
-        fnme = f"versions/web_static_{datetime.now().strftime(('%Y%m%d%H%M%S'))}.tgz"
+        fnme = "versions/web_static_"
+        fnme = fnme + f"{datetime.now().strftime(('%Y%m%d%H%M%S'))}.tgz"
         archive = local(f"tar -cvzf {fnme} web_static")
         return fnme
-    except:
+    except Exception:
         return None
 
 
@@ -43,7 +44,7 @@ def do_deploy(archive_path):
         run(f"sudo ln -s {new_folder} /data/web_static/current")
         print("New version deployed")
         return True
-    except:
+    except Exception:
         return False
 
 
