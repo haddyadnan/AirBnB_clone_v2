@@ -1,17 +1,11 @@
 #!/usr/bin/python3
-
-
-"""
-Write a Fabric script (based on the file 1-pack_web_static.py)
-that distributes an archive to your web servers
-"""
-#Fabric file to deploy static files
-
-from fabric.api import *
-import os
+# Fabfile to distribute an archive to a web server.
+import os.path
+from fabric.api import env
+from fabric.api import put
+from fabric.api import run
 
 env.hosts = ["3.238.197.104", "3.238.204.66"]
-env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
