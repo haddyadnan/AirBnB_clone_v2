@@ -19,13 +19,16 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
 
-        if not kwargs:
+        if len(args) > 0:
+            for k in args[0]:
+                setattr(self, k, args[0][k])
 
+        else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
 
-        else:
+        if kwargs:
             kwargs["updated_at"] = datetime.strptime(
                 kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
             )
@@ -34,7 +37,8 @@ class BaseModel:
             )
 
             del kwargs["__class__"]
-            self.__dict__.update(kwargs)
+            print(kwargs)
+            # self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -67,6 +71,7 @@ class BaseModel:
         from models import storage
 
         storage.delete(self.id)
+        storage.save()
 
     def attr_update(self, attr_dict=None):
         """
@@ -76,8 +81,7 @@ class BaseModel:
         do_not_update = ["id", "created_at", "updated_at"]
         if attr_dict:
             to_update = {k: v for k, v in attr_dict.items() if k not in do_not_update}
-            # print("in base_model")
-            # print(to_update)
+
             for k, v in to_update.items():
                 setattr(self, k, v)
             self.save()

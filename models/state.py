@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 
-from tempfile import gettempprefix
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models import storage
+from os import getenv
 
 
 class State(BaseModel, Base):
@@ -18,12 +18,14 @@ class State(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    @property
-    def cities(self):
-        """Getter attribute for FileStorage class"""
-        cities = storage.all("City")
-        cty = []
-        for i in cities:
-            if cities[i] == self.id:
-                cty.append(cities[i])
-        return cty
+    if getenv("HBNB_TYPE_STORAGE", "") != "db":
+
+        @property
+        def cities(self):
+            """Getter attribute for FileStorage class"""
+            cities = storage.all("City")
+            cty = []
+            for i in cities:
+                if cities[i] == self.id:
+                    cty.append(cities[i])
+            return cty

@@ -5,7 +5,6 @@ Script for DBStorage integration
 """
 
 import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm.scoping import scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -29,7 +28,7 @@ class DBStorage:
         HBNB_ENV = os.getenv("HBNB_ENV")
 
         self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@{}/{}".format(
+            "mysql+mysqldb://{}:{}@{}:3306/{}".format(
                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB
             ),
             pool_pre_ping=True,
@@ -43,18 +42,48 @@ class DBStorage:
         query on the current database session (self.__session) all objects
         depending of the class name (argument cls
         """
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.state import State
+        from models.user import User
+        from models.amenity import Amenity
+
+        classes = {
+            "Amenity": Amenity,
+            "City": City,
+            "Place": Place,
+            "Review": Review,
+            "State": State,
+            "User": User,
+        }
+
         cls_name = ["User", "State", "City", "Amenity", "Place", "Review"]
-        objects = {}
+        new_objects = {}
         if cls:
-            for obj in self.__session.query(eval(cls)):
-                key = cls.__name__ + "." + cls.id
-                objects[key] = obj
+            objs = self.__session.query(cls).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + "." + obj.id
+                try:
+                    del obj._sa_instance_state
+                except KeyError:
+                    pass
+                new_objects[key] = obj.__dict__
         else:
             for cls in cls_name:
-                for obj in self.__session.query(eval(cls)):
-                    key = cls.__name__ + "." + cls.id
-                objects[key] = obj
-        return objects
+                for obj in self.__session.query(classes[cls]).all():
+                    key = obj.__class__.__name__ + "." + obj.id
+                new_objects[key] = obj.__dict__
+        return new_objects
+        # new_dict = {}
+        # for clss in classes:
+        #     if cls is None or cls is classes[clss] or cls is clss:
+        #         objs = self.__session.query(classes[clss]).all()
+        #         for obj in objs:
+        #             # key = obj.__class__.__name__ + "." + obj.id
+        #             # new_dict[key] = obj
+        #             priobj
+        # return obj.__dict__
 
     def new(self, obj):
         """a
