@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,9 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+HBNB_TYPE_STORAGE = os.getenv("HBNB_TYPE_STORAGE")
 
 
 class HBNBCommand(cmd.Cmd):
@@ -255,12 +259,22 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split(".")[0] == args:
-                    print_list.append(str(v))
+            # if HBNB_TYPE_STORAGE == "db":
+            # print_list.append(storage.all())
+            # print(storage.all(HBNBCommand.classes[args]))
+            print_list.append(storage.all(HBNBCommand.classes[args]))
+            # else:
+            # for k, v in storage._FileStorage__objects.items():
+            #     if k.split(".")[0] == args:
+            #         print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            # if HBNB_TYPE_STORAGE == "db":
+            # print_list.append(storage.all())
+            # print(storage.all())
+            print_list.append(storage.all())
+            # else:
+            #     for k, v in storage._FileStorage__objects.items():
+            #         print_list.append(str(v))
 
         print(print_list)
 
