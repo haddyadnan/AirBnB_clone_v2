@@ -22,8 +22,8 @@ def do_pack():
     try:
         local("mkdir -p versions")
         fnme = "versions/web_static_"
-        fnme = fnme + f"{datetime.now().strftime(('%Y%m%d%H%M%S'))}.tgz"
-        archive = local(f"tar -cvzf {fnme} web_static")
+        fnme = fnme + "{}.tgz".format({datetime.now().strftime(("%Y%m%d%H%M%S"))})
+        archive = local("tar -cvzf {} web_static".format(fnme))
         return fnme
     except Exception:
         return None
