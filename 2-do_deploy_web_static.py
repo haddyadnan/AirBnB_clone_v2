@@ -25,12 +25,12 @@ def do_deploy(archive_path):
         new_folder = "/data/web_static/releases/" + file_a.split(".")[0]
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(new_folder))
-        run(f"sudo tar -xzf /tmp/{file_a} -C {new_folder}")
-        run(f"sudo rm /tmp/{file_a}")
-        run(f"sudo mv {new_folder}/web_static/* {new_folder}/")
-        run(f"sudo rm -rf {new_folder}/web_static")
+        run("sudo tar -xzf /tmp/{} -C {}".format(file_a, new_folder))
+        run("sudo rm /tmp/{}".format(file_a))
+        run("sudo mv {}/web_static/* {}/".format(new_folder, new_folder))
+        run("sudo rm -rf {}/web_static".format(new_folder))
         run("sudo rm -rf /data/web_static/current")
-        run(f"sudo ln -s {new_folder} /data/web_static/current")
+        run("sudo ln -s {} /data/web_static/current".format(new_folder))
         print("New version deployed")
         return True
     except Exception:
