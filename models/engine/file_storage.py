@@ -25,6 +25,8 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
+        if "_sa_instance_state" in FileStorage.__objects.keys():
+            del FileStorage.__objects["_sa_instance_state"]
         with open(FileStorage.__file_path, "w") as f:
             temp = {}
             temp.update(FileStorage.__objects)
@@ -69,3 +71,7 @@ class FileStorage:
                     self.all()[key] = classes[val["__class__"]](**val)
         except FileNotFoundError:
             pass
+
+    def close(self):
+        """close method for deserializing the JSON file to objects"""
+        self.reload()

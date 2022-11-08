@@ -23,7 +23,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Getter attribute for FileStorage class"""
-            cities = storage.all("City")
+            from models.city import City
+
+            cities = storage.all(City)
             cty = []
             for i in cities:
                 if cities[i] == self.id:
