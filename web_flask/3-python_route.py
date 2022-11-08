@@ -34,7 +34,7 @@ def c_text(text):
 def python_text(text="is cool"):
     """display python followed by text"""
 
-    return "python {}".format(text.replace("_", " "))
+    return "Python {}".format(text.replace("_", " "))
 
 
 if __name__ == "__main__":
